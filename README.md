@@ -11,7 +11,7 @@ A TypeScript CLI tool that integrates with the Streamline Icons API, allowing yo
 ### 1. Install
 
 ```bash
-npm install -g streamline-cli
+npm install -g @kennyfrc/streamline-cli
 ```
 
 ### 2. Configure
