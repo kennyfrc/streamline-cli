@@ -155,3 +155,13 @@ streamline --version         # Show version
 
 - Node.js 16+
 - Streamline Icons API key
+
+## Publishing
+
+Scoped packages publish as private by default on npm. When releasing a new version, run:
+
+```bash
+npm publish --access public
+```
+
+The package also declares `publishConfig.access = "public"` to guard against the `E402 Payment Required` error.
