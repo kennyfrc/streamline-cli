@@ -1,0 +1,35 @@
+{
+  "name": "streamline-cli",
+  "version": "1.0.0",
+  "description": "CLI tool for Streamline Icons API",
+  "main": "dist/cli.js",
+  "bin": {
+    "streamline": "dist/cli.js"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
+    "build": "npm run type-check && tsc",
+    "build:watch": "tsc --watch",
+    "dev": "npm run build:watch",
+    "link": "npm run build && npm link",
+    "test:interface1": "export STREAMLINE_API_KEY=JbrohwGRskTbdyKy.fff72ef622bbadf50ae74c976feec8e8 && npm run link && streamline search global home --limit 2",
+    "test:interface2": "export STREAMLINE_API_KEY=JbrohwGRskTbdyKy.fff72ef622bbadf50ae74c976feec8e8 && npm run link && streamline search family material-pro-sharp-line user --limit 1",
+    "test:interface3": "export STREAMLINE_API_KEY=JbrohwGRskTbdyKy.fff72ef622bbadf50ae74c976feec8e8 && npm run link && streamline download svg ico_CVtS8rNWud0BTWe2 --output ./test-downloads",
+    "test:interface4": "export STREAMLINE_API_KEY=JbrohwGRskTbdyKy.fff72ef622bbadf50ae74c976feec8e8 && npm run link && streamline download png ico_tUHFQeoINKLdP6CV --size 128 --output ./test-downloads",
+    "test:interface5": "export STREAMLINE_API_KEY=JbrohwGRskTbdyKy.fff72ef622bbadf50ae74c976feec8e8 && npm run link && streamline get icon ico_tUHFQeoINKLdP6CV",
+    "test:all": "npm run test:interface1 && npm run test:interface2 && npm run test:interface3 && npm run test:interface4 && npm run test:interface5",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["cli", "icons", "streamline", "api"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "commander": "^11.0.0"
+  }
+}
