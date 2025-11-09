@@ -25,26 +25,39 @@ export function createFamilySearchCommand(): Command {
     .option('--api-key <key>', 'API key (or use STREAMLINE_API_KEY env var)')
     .addHelpText('after', `
 Examples:
-  # Search in a specific family by slug
-  $ streamline search family material-pro-sharp-line home --limit 10
+  # Search in Material families (covers both Material Pro and Material Symbols)
+  $ streamline search family material folder
+  $ streamline search family mat home
   
-  # Search in all families of a set (fuzzy matching)
+  # Search in Sharp families
   $ streamline search family sharp home
-  $ streamline search family material user
-  $ streamline search family core * --limit 5
+  $ streamline search family sharp user --limit 10
   
-  # Filter by style within a set
-  $ streamline search family sharp --style line home
+  # Search in Core families with style filter
   $ streamline search family core --style solid user
-  $ streamline search family ultimate --style duo star
+  $ streamline search family core * --style line --limit 20
   
-  # Discover available sets and families
-  $ streamline search --sets
-  $ streamline search --list-families sharp
+  # Get all icons in a family
+  $ streamline search family "Material Symbols" *
+  $ streamline search family sharp-line home
+  
+  # Discover what's available
+  $ streamline search --sets                          # List all icon sets
+  $ streamline search --list-families material       # List families in Material set
+  $ streamline search family material * --limit 5   # Preview some icons
 
-💡 PRO TIP: Use set names instead of full slugs for easier searching
-   Try: streamline search family sharp home        # Searches all Sharp families
-   Instead of: streamline search family sharp-line home  # Only one family
+💡 SHORTCUT: Use --family flag instead of subcommand
+   $ streamline search folder --family material    # Same as above but shorter
+
+💡 ALIASES: Common shortcuts you can use in place of full names
+   mat, material → Material Pro
+   material-symbols, material symbols → Material Symbols
+   sharp → All Sharp families
+   core → All Core families
+   ultimate → All Ultimate families
+   flex → All Flex families
+   plump → All Plump families
+   micro → All Micro families
 `)
     .action(async (familySlug: string, query: string, options: any, command: Command) => {
       try {

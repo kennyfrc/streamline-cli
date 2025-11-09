@@ -329,6 +329,42 @@ export function resolveFamilyInput(input: string, style?: string): string[] {
     return partialMatches;
   }
   
+  // Enhanced: Check common aliases
+  const inputLower = input.toLowerCase();
+  
+  // Map common shorthand to set keys
+  const aliasMap: Record<string, string> = {
+    'mat': 'material-pro',
+    'material': 'material-pro',
+    'materials': 'material-pro',
+    'matpro': 'material-pro',
+    'material-pro': 'material-pro',
+    'materialpro': 'material-pro',
+    'material-symbols': 'material-symbols',
+    'material symbols': 'material-symbols',
+    'mat-sym': 'material-symbols',
+    'matsymbols': 'material-symbols',
+    'materialsymbols': 'material-symbols'
+  };
+  
+  const mappedKey = aliasMap[inputLower];
+  if (mappedKey) {
+    const set = FAMILY_SETS[mappedKey];
+    if (set) {
+      let families = Object.values(set.families);
+      
+      // Filter by style if provided
+      if (style) {
+        families = families.filter(f => {
+          const styleLower = style.toLowerCase();
+          return f.slug.toLowerCase().includes(styleLower);
+        });
+      }
+      
+      return families.map(f => f.slug);
+    }
+  }
+  
   // Check if it's a set name
   const set = findSetByName(input);
   if (set) {
