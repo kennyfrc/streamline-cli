@@ -122,6 +122,7 @@ export class StreamlineApi {
 
   async downloadSvg(hash: string, options: DownloadSvgOptions = {}): Promise<Buffer> {
     return new Promise((resolve, reject) => {
+      // API requires either responsive=true or size parameter for SVG downloads
       const url = new URL(`${this.baseUrl}/icons/${hash}/download/svg`);
       if (options.responsive) {
         url.searchParams.set('responsive', 'true');
@@ -163,7 +164,7 @@ export class StreamlineApi {
 
   async downloadPng(hash: string, options: DownloadPngOptions = {}): Promise<Buffer> {
     return new Promise((resolve, reject) => {
-      const url = new URL(`${this.baseUrl}/icons/${hash}/download/png`);
+      const url = new URL(`${this.baseUrl}/icons/${hash}//download/png`);
       
       if (options.size) {
         url.searchParams.set('size', String(options.size));

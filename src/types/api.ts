@@ -66,5 +66,5 @@ export interface DownloadSvgOptions {
 }
 
 export interface DownloadPngOptions {
-  size?: number; // API uses a single square dimension.
+  size?: number; // Square dimension only - API uses single value for both width/height
 }

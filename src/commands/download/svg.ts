@@ -24,7 +24,7 @@ export function createDownloadSvgCommand(): Command {
     .argument('<hash>', 'Icon hash (e.g., ico_CVtS8rNWud0BTWe2)')
     .option('-o, --output <path>', 'Output directory (default: current directory)')
     .option('--name <name>', 'Custom filename (without extension)')
-    .option('--responsive', 'Make SVG responsive', false)
+    .option('--no-responsive', 'Disable responsive SVG')
     .option('--api-key <key>', 'API key (or use STREAMLINE_API_KEY env var)')
     .action(async (iconHash: string, options: any, command: Command) => {
       try {
@@ -48,7 +48,7 @@ export function createDownloadSvgCommand(): Command {
         const api = new StreamlineApi(apiKey);
         
         const downloadOptions: DownloadSvgOptions = {
-          responsive: options.responsive
+          responsive: options.responsive !== false
         };
 
         const outputDir = options.output || process.cwd();
@@ -59,7 +59,7 @@ export function createDownloadSvgCommand(): Command {
         console.log('🔍 Getting icon details...');
         const icon = await api.getIcon(iconHash);
         
-        const filename = generateFilename(icon.hash, icon.name, options.name, options.responsive);
+        const filename = generateFilename(icon.hash, icon.name, options.name, downloadOptions.responsive);
         const outputPath = path.join(outputDir, filename);
 
         console.log(`📥 Downloading ${icon.name} as SVG...`);
