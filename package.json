@@ -1,6 +1,6 @@
 {
   "name": "@kennyfrc/streamline-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CLI tool for Streamline Icons API",
   "main": "dist/cli.js",
   "bin": {

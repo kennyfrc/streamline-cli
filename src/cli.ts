@@ -7,6 +7,7 @@ import { createDownloadSvgCommand } from './commands/download/svg';
 import { createDownloadPngCommand } from './commands/download/png';
 import { createGetIconCommand } from './commands/get/icon';
 import { ConfigService } from './services/config';
+import { listAllSets, listFamiliesInSet } from './data/families';
 
 const program = new Command();
 
@@ -25,14 +26,29 @@ const searchCommand = program
   .argument('[query]', 'Search query (try: streamline search home)')
   .option('-l, --limit <number>', 'Number of results (max 100)', '50')
   .option('--api-key <key>', 'API key (or use STREAMLINE_API_KEY env var)')
+  .option('--sets', 'List all available icon sets (e.g., Ultimate, Sharp, Core, Material Pro)')
+  .option('--list-families <set>', 'List families within a set (e.g., --list-families sharp)')
   .action(async (query: string | undefined, options: any, command: Command) => {
+    // Handle --sets flag (list available sets)
+    if (options.sets) {
+      listAllSets();
+      return;
+    }
+    
+    // Handle --list-families flag (list families in a set)
+    if (options.listFamilies) {
+      listFamiliesInSet(options.listFamilies);
+      return;
+    }
+    
     // Show helpful message when no query or subcommand provided
     if (!query) {
       console.log('💡 Usage: streamline search <query>           # Search globally\n   Example: streamline search home\n');
       console.log('   Advanced: streamline search global <query>    # Explicit global search');
       console.log('   Targeted: streamline search family <family> <query> # Search in specific family\n');
       console.log('🤔 Not sure which family to use?');
-      console.log('   Try: streamline search family material-pro-sharp-line * --limit 5\n');
+      console.log('   Try: streamline search --sets           # List all sets');
+      console.log('   Try: streamline search --list-families sharp  # List families in Sharp set\n');
       command.help();
       return;
     }
