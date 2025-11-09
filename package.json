@@ -25,7 +25,12 @@
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["cli", "icons", "streamline", "api"],
+  "keywords": [
+    "cli",
+    "icons",
+    "streamline",
+    "api"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
