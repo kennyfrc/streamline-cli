@@ -9,14 +9,24 @@ export function createGlobalSearchCommand(): Command {
   
   command
     .description('Search for icons across all families')
-    .argument('<query>', 'Search query')
+    .argument('<query>', 'Search query (e.g., "home", "folder", "user")')
     .option('-t, --product-type <type>', 'Product type', 'icons')
     .option('-l, --limit <number>', 'Number of results (max 100)', '50')
     .option('-o, --offset <number>', 'Pagination offset', '0')
-    .option('--style <name>', 'Filter by style/family')
+    .option('--style <name>', 'Filter by style/family (see "streamline search family <familySlug> *" to explore families)')
     .option('--category <name>', 'Filter by category')
     .option('--free-only', 'Show only free icons')
     .option('--api-key <key>', 'API key (or use STREAMLINE_API_KEY env var)')
+    .addHelpText('after', `
+Examples:
+  $ streamline search global home --limit 10
+  $ streamline search global folder --free-only
+  $ streamline search global user --style material
+
+💡 PRO TIP: Find available families with:
+  $ streamline search family material-pro-sharp-line * --limit 5
+  $ streamline search family "font-awesome-regular" * --limit 5
+`)
     .action(async (query: string, options: any, command: Command) => {
       try {
         const parentOpts = (command?.parent as any)?.opts();

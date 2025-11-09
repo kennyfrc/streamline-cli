@@ -12,7 +12,7 @@ const program = new Command();
 
 program
   .name('streamline')
-  .description('CLI tool for Streamline Icons API')
+  .description('CLI tool for Streamline Icons API\n\nCommon usage:\n  $ streamline search home              # Search for "home" icon globally\n  $ streamline search family mat *      # Explore Material family\n  $ streamline download svg <hash>      # Download icon')
   .version('1.0.0')
 .helpOption('-h, --help', 'display help for command');
 program
@@ -21,7 +21,38 @@ program
 
 const searchCommand = program
   .command('search')
-  .description('Search for icons');
+  .description('Search for icons\n\n💡 Quick start: streamline search <query>           # Search globally\n   Advanced: streamline search global <query>         # Explicit global search\n   Targeted: streamline search family <family> <query> # Search in a specific family')
+  .argument('[query]', 'Search query (try: streamline search home)')
+  .option('-l, --limit <number>', 'Number of results (max 100)', '50')
+  .option('--api-key <key>', 'API key (or use STREAMLINE_API_KEY env var)')
+  .action(async (query: string | undefined, options: any, command: Command) => {
+    // Show helpful message when no query or subcommand provided
+    if (!query) {
+      console.log('💡 Usage: streamline search <query>           # Search globally\n   Example: streamline search home\n');
+      console.log('   Advanced: streamline search global <query>    # Explicit global search');
+      console.log('   Targeted: streamline search family <family> <query> # Search in specific family\n');
+      console.log('🤔 Not sure which family to use?');
+      console.log('   Try: streamline search family material-pro-sharp-line * --limit 5\n');
+      command.help();
+      return;
+    }
+
+    // Default to global search when query provided without subcommand
+    try {
+      const globalSearchCmd = createGlobalSearchCommand();
+      const searchArgv = [query];
+      
+      // Pass through any options
+      if (options.limit) searchArgv.push('--limit', options.limit);
+      if (options.apiKey) searchArgv.push('--api-key', options.apiKey);
+      
+      // Parse with the global command directly
+      await globalSearchCmd.parseAsync(searchArgv, { from: 'user' });
+    } catch (error) {
+      console.error('❌ Search failed:', error instanceof Error ? error.message : 'Unknown error');
+      process.exit(1);
+    }
+  });
 
 searchCommand.addCommand(createGlobalSearchCommand());
 searchCommand.addCommand(createFamilySearchCommand());

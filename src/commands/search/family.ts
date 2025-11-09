@@ -8,15 +8,24 @@ export function createFamilySearchCommand(): Command {
   const command = new Command('family');
   
   command
-    .description('Search for icons within a specific family')
-    .argument('<familySlug>', 'Family slug (e.g., material-pro-sharp-line)')
-    .argument('[query]', 'Search query (optional - use * for all icons)', '')
+    .description('Search for icons within a specific family (run "streamline search family material-pro-sharp-line *" to see available families)')
+    .argument('<familySlug>', 'Family slug (e.g., material-pro-sharp-line, font-awesome-regular)')
+    .argument('[query]', 'Search query (use "*" for all icons in family)', '*')
     .option('-t, --product-type <type>', 'Product type', 'icons')
     .option('-l, --limit <number>', 'Number of results (max 100)', '50')
     .option('-o, --offset <number>', 'Pagination offset', '0')
     .option('--category <name>', 'Filter by category')
     .option('--free-only', 'Show only free icons')
     .option('--api-key <key>', 'API key (or use STREAMLINE_API_KEY env var)')
+    .addHelpText('after', `
+Examples:
+  $ streamline search family material-pro-sharp-line home --limit 10
+  $ streamline search family "font-awesome-regular" user --free-only
+  $ streamline search family solar-bold-duotone * --limit 5  # List all icons in family
+
+💡 PRO TIP: Not sure about family names? They appear in search results.
+   Try a global search first: streamline search global home
+`)
     .action(async (familySlug: string, query: string, options: any, command: Command) => {
       try {
         const parentOpts = (command?.parent as any)?.opts();
